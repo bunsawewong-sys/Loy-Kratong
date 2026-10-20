@@ -1,0 +1,44 @@
+{
+  "name": "loy-kratong",
+  "version": "1.0.0",
+  "description": "Online Loy Krathong game for corporate events (mobile + big screen)",
+  "scripts": {
+    "dev": "vite --host",
+    "dev:emu": "vite --host --mode emulator",
+    "emulators": "firebase emulators:start --only auth,database",
+    "build": "tsc && vite build",
+    "preview": "vite preview --host",
+    "typecheck": "tsc",
+    "test": "vitest run",
+    "test:rules": "firebase emulators:exec --only database \"vitest run --config tests/rules/vitest.config.ts\"",
+    "test:e2e": "firebase emulators:exec --only auth,database \"playwright test\"",
+    "seed": "node scripts/seed.mjs",
+    "deploy": "npm run build && firebase deploy --only hosting,database"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bunsawewong-sys/Loy-Kratong.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bunsawewong-sys/Loy-Kratong/issues"
+  },
+  "homepage": "https://github.com/bunsawewong-sys/Loy-Kratong#readme",
+  "dependencies": {
+    "firebase": "^13.0.0",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^6.0.0",
+    "@playwright/test": "^1.56.1",
+    "@types/qrcode": "^1.5.6",
+    "firebase-tools": "^15.34.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.5"
+  },
+  "private": true,
+  "type": "module"
+}

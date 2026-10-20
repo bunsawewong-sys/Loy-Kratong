@@ -1,0 +1,132 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #0e1a47;
+  font-family: 'Mali', 'Sarabun', system-ui, sans-serif;
+  color: #fff;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+#river {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  cursor: none;
+}
+
+.hud {
+  position: fixed;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.top-left {
+  top: 2vh;
+  left: 2vw;
+  display: flex;
+  align-items: center;
+  gap: 1.2vw;
+}
+
+.top-left img {
+  height: 8vh;
+  max-width: 18vw;
+  object-fit: contain;
+}
+
+.top-left h1 {
+  margin: 0;
+  font-size: 4.4vh;
+  text-shadow: 0 0.4vh 0 rgba(0, 0, 0, 0.35);
+}
+
+.counter {
+  top: 2vh;
+  right: 2vw;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 1vh 1.4vw;
+  border-radius: 2vh;
+  background: rgba(20, 16, 60, 0.55);
+}
+
+.counter .label {
+  font-size: 2vh;
+  opacity: 0.85;
+}
+
+.counter .value {
+  font-size: 6vh;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #ffd166;
+}
+
+.banner {
+  top: 12vh;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1vh 2vw;
+  border-radius: 999px;
+  background: rgba(255, 143, 184, 0.9);
+  color: #5a1033;
+  font-size: 2.6vh;
+  font-weight: 700;
+}
+
+.qr {
+  right: 2vw;
+  bottom: 3vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4vh;
+  padding: 1.2vh;
+  border-radius: 2vh;
+  background: #fffaf0;
+  color: #3b2a5c;
+  font-size: 1.9vh;
+  font-weight: 700;
+}
+
+.qr canvas {
+  width: 17vh !important;
+  height: 17vh !important;
+}
+
+.qr .en {
+  font-size: 1.5vh;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+.start {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1vh;
+  border: none;
+  background: rgba(10, 8, 30, 0.55);
+  color: #fff;
+  font: inherit;
+  font-size: 4vh;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.start small {
+  font-size: 2.4vh;
+  opacity: 0.8;
+}

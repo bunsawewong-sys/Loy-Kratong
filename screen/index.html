@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ลอยกระทง - จอใหญ่</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/screen/style.css" />
+  </head>
+  <body>
+    <canvas id="river"></canvas>
+
+    <div class="hud top-left">
+      <img id="logo" alt="" hidden />
+      <h1 id="event-name">ลอยกระทง</h1>
+    </div>
+
+    <div class="hud top-right counter">
+      <span class="label">กระทงทั้งหมด · Krathongs</span>
+      <span id="count" class="value">0</span>
+    </div>
+
+    <div id="closed" class="hud banner" hidden>ยังไม่เปิดให้ลอยกระทง · Floating opens soon</div>
+
+    <div id="qr-card" class="hud bottom-right qr">
+      <canvas id="qr"></canvas>
+      <span>สแกนเพื่อร่วมลอยกระทง</span>
+      <span class="en">Scan to float a krathong</span>
+    </div>
+
+    <button id="start" class="start" type="button">
+      <span>คลิกเพื่อเริ่ม (เปิดเสียง + เต็มจอ)</span>
+      <small>Click to start (sound + fullscreen)</small>
+    </button>
+
+    <script type="module" src="/src/screen/main.ts"></script>
+  </body>
+</html>

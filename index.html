@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#1d1b4f" />
+    <title>ลอยกระทงออนไลน์</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/player/style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <img id="logo" alt="" hidden />
+        <span id="event-name" data-i18n="appTitle"></span>
+      </div>
+      <div class="toggles">
+        <button id="sound-toggle" class="chip" type="button" aria-pressed="true">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" /><path class="wave" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" /></svg>
+          <span class="sr-only" data-i18n="sound"></span>
+        </button>
+        <button id="lang-toggle" class="chip" type="button">EN</button>
+      </div>
+    </header>
+
+    <main>
+      <!-- Step 1: who are you -->
+      <section id="step-name" class="step">
+        <h1 class="title" data-i18n="appTitle"></h1>
+        <canvas id="hero" class="hero"></canvas>
+        <label class="field">
+          <span data-i18n="yourName"></span>
+          <input id="name" maxlength="30" autocomplete="nickname" enterkeyhint="next" />
+        </label>
+        <label class="field">
+          <span data-i18n="dept"></span>
+          <input id="dept" maxlength="30" autocomplete="organization" enterkeyhint="done" />
+        </label>
+        <p id="name-error" class="error" role="alert"></p>
+        <button id="to-decorate" class="btn primary" type="button" data-i18n="start"></button>
+      </section>
+
+      <!-- Step 2: decorate -->
+      <section id="step-decorate" class="step" hidden>
+        <h2 data-i18n="decorate"></h2>
+        <canvas id="preview" class="preview"></canvas>
+        <div class="tabs" role="tablist">
+          <button class="tab" data-group="base" role="tab" data-i18n="base"></button>
+          <button class="tab" data-group="flower" role="tab" data-i18n="flower"></button>
+          <button class="tab" data-group="candle" role="tab" data-i18n="candle"></button>
+          <button class="tab" data-group="color" role="tab" data-i18n="color"></button>
+        </div>
+        <div id="options" class="options"></div>
+        <div class="row">
+          <button id="back-name" class="btn ghost" type="button" data-i18n="back"></button>
+          <button id="to-wish" class="btn primary" type="button" data-i18n="next"></button>
+        </div>
+      </section>
+
+      <!-- Step 3: wish + launch -->
+      <section id="step-wish" class="step" hidden>
+        <h2 data-i18n="wish"></h2>
+        <canvas id="launch-preview" class="preview"></canvas>
+        <label class="field">
+          <textarea id="wish" maxlength="120" rows="3" data-i18n-placeholder="wishPlaceholder"></textarea>
+          <span id="wish-count" class="counter">0/120</span>
+        </label>
+        <p id="launch-status" class="status" role="status"></p>
+        <div class="row">
+          <button id="back-decorate" class="btn ghost" type="button" data-i18n="back"></button>
+          <button id="launch" class="btn primary big" type="button" data-i18n="launch"></button>
+        </div>
+      </section>
+
+      <!-- Step 4: done -->
+      <section id="step-done" class="step" hidden>
+        <h2 data-i18n="launched"></h2>
+        <canvas id="done-thumb" class="thumb-large"></canvas>
+        <button id="save" class="btn" type="button" data-i18n="save"></button>
+        <button id="again" class="btn primary" type="button" data-i18n="again"></button>
+        <p id="again-status" class="status"></p>
+      </section>
+
+      <!-- River view -->
+      <section id="step-river" class="step river-step" hidden>
+        <canvas id="river" class="river"></canvas>
+        <p class="hint" data-i18n="tapKratong"></p>
+        <h3 data-i18n="myKratongs"></h3>
+        <div id="mine" class="mine"></div>
+      </section>
+    </main>
+
+    <nav class="bottom-nav">
+      <button id="nav-make" class="nav-btn active" type="button" data-i18n="navMake"></button>
+      <button id="nav-river" class="nav-btn" type="button" data-i18n="river"></button>
+    </nav>
+
+    <dialog id="sheet" class="sheet">
+      <canvas id="sheet-thumb" class="thumb"></canvas>
+      <div class="sheet-body">
+        <p id="sheet-name" class="sheet-name"></p>
+        <p id="sheet-wish" class="sheet-wish"></p>
+        <div class="row">
+          <button id="react-heart" class="btn react" type="button" data-type="heart">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.3 3 4.5 6.6 4.5c2.2 0 3.6 1.3 4.4 2.6.8-1.3 2.2-2.6 4.4-2.6 3.6 0 5.7 3.8 4.2 7.3C19.5 16.4 12 21 12 21z" /></svg>
+            <span data-i18n="sendHeart"></span>
+            <b class="count"></b>
+          </button>
+          <button id="react-flower" class="btn react" type="button" data-type="flower">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="6.5" r="3.6" /><circle cx="17.2" cy="10.3" r="3.6" /><circle cx="15.2" cy="16.4" r="3.6" /><circle cx="8.8" cy="16.4" r="3.6" /><circle cx="6.8" cy="10.3" r="3.6" /><circle cx="12" cy="12" r="2.8" class="center" /></svg>
+            <span data-i18n="sendFlower"></span>
+            <b class="count"></b>
+          </button>
+        </div>
+      </div>
+      <button id="sheet-close" class="btn ghost" type="button" data-i18n="close"></button>
+    </dialog>
+
+    <script type="module" src="/src/player/main.ts"></script>
+  </body>
+</html>

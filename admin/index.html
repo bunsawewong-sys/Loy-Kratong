@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>ลอยกระทง - Admin</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/admin/style.css" />
+  </head>
+  <body>
+    <header class="bar">
+      <h1>Admin · ลอยกระทง</h1>
+      <button id="logout" class="btn small" type="button" hidden>ออกจากระบบ</button>
+    </header>
+
+    <main>
+      <section id="login" class="card narrow" hidden>
+        <h2>เข้าสู่ระบบ Admin</h2>
+        <form id="login-form">
+          <label>Email <input id="email" type="email" autocomplete="username" required /></label>
+          <label>Password <input id="password" type="password" autocomplete="current-password" required /></label>
+          <button class="btn primary" type="submit">เข้าสู่ระบบ</button>
+          <p id="login-error" class="error" role="alert"></p>
+        </form>
+      </section>
+
+      <section id="not-admin" class="card narrow" hidden>
+        <h2>บัญชีนี้ยังไม่ใช่ Admin</h2>
+        <p>ให้เพิ่ม UID นี้ใน Realtime Database ที่ <code>admins/&lt;UID&gt; = true</code> (ดูคู่มือใน README)</p>
+        <p><code id="my-uid"></code></p>
+      </section>
+
+      <div id="dashboard" hidden>
+        <section class="card">
+          <h2>ควบคุมงาน</h2>
+          <div class="state">
+            สถานะ: <b id="open-state">-</b>
+          </div>
+          <div class="buttons">
+            <button id="open-event" class="btn primary" type="button">เปิดให้ลอย + ยิงพลุ</button>
+            <button id="close-event" class="btn" type="button">ปิดการลอย + ยิงพลุ</button>
+            <button id="toggle-open" class="btn" type="button">เปิด/ปิด (ไม่มีพลุ)</button>
+            <button id="fireworks" class="btn" type="button">ยิงพลุ</button>
+          </div>
+          <div class="links">
+            <a id="screen-link" href="/screen/" target="_blank" rel="noopener">เปิดจอใหญ่ (Big screen)</a>
+            <span>ลิงก์ผู้เล่น: <code id="player-url"></code></span>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>ตั้งค่า</h2>
+          <form id="settings">
+            <label>ชื่องาน <input id="event-name" maxlength="80" placeholder="เช่น ลอยกระทง บริษัท ABC 2569" /></label>
+            <label>Cooldown ระหว่างการลอย (วินาที) <input id="cooldown" type="number" min="0" max="3600" step="10" /></label>
+            <label
+              >โลโก้ (PNG/JPG/SVG จะถูกย่อเหลือไม่เกิน 256px)
+              <input id="logo-file" type="file" accept="image/*" />
+            </label>
+            <div class="logo-row">
+              <img id="logo-preview" alt="" hidden />
+              <button id="logo-remove" class="btn small" type="button" hidden>ลบโลโก้</button>
+            </div>
+            <button class="btn primary" type="submit">บันทึกการตั้งค่า</button>
+            <span id="settings-status" class="ok"></span>
+          </form>
+        </section>
+
+        <section class="card">
+          <h2>สถิติ</h2>
+          <div class="stats">
+            <div><b id="st-total">0</b><span>กระทงทั้งหมด</span></div>
+            <div><b id="st-players">0</b><span>ผู้เล่น</span></div>
+            <div><b id="st-reactions">0</b><span>Reactions</span></div>
+            <div><b id="st-hidden">0</b><span>ถูกซ่อน</span></div>
+          </div>
+          <div class="split">
+            <div>
+              <h3>แยกตามแผนก</h3>
+              <table id="by-dept"></table>
+            </div>
+            <div>
+              <h3>ได้รับกำลังใจมากที่สุด</h3>
+              <ol id="top-reacted"></ol>
+            </div>
+          </div>
+          <button id="export" class="btn" type="button">Export CSV</button>
+        </section>
+
+        <section class="card">
+          <h2>รายการกระทง</h2>
+          <div class="filters">
+            <input id="search" type="search" placeholder="ค้นหาชื่อ / แผนก / คำอธิษฐาน" />
+            <select id="filter">
+              <option value="all">ทั้งหมด</option>
+              <option value="visible">แสดงอยู่</option>
+              <option value="hidden">ถูกซ่อน</option>
+              <option value="flagged">มีคำไม่เหมาะสม</option>
+            </select>
+          </div>
+          <table class="list">
+            <thead>
+              <tr><th>เวลา</th><th>ชื่อ</th><th>แผนก</th><th>คำอธิษฐาน</th><th>♥</th><th></th></tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+          <button id="more" class="btn small" type="button" hidden>แสดงเพิ่ม</button>
+        </section>
+
+        <section class="card danger">
+          <h2>Reset งาน</h2>
+          <p>ลบกระทง, reactions และ cooldown ทั้งหมด (ใช้ตอนเริ่มงานใหม่ เช่น ปีหน้า) ข้อมูลจะหายถาวร แนะนำ Export CSV ก่อน</p>
+          <button id="reset" class="btn danger" type="button">Reset ข้อมูลทั้งหมด</button>
+        </section>
+      </div>
+    </main>
+
+    <script type="module" src="/src/admin/main.ts"></script>
+  </body>
+</html>

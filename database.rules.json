@@ -1,0 +1,69 @@
+{
+  "rules": {
+    "config": {
+      ".read": true,
+      ".write": "auth != null && root.child('admins').child(auth.uid).val() === true",
+      "eventName": { ".validate": "newData.isString() && newData.val().length <= 80" },
+      "logo": { ".validate": "newData.isString() && newData.val().length <= 200000" },
+      "open": { ".validate": "newData.isBoolean()" },
+      "cooldownSec": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 3600" },
+      "fireworksAt": { ".validate": "newData.isNumber() && newData.val() <= now" },
+      "$other": { ".validate": false }
+    },
+
+    "admins": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": false
+      }
+    },
+
+    "users": {
+      ".write": "auth != null && root.child('admins').child(auth.uid).val() === true && !newData.exists()",
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "lastLaunchAt": {
+          ".write": "auth != null && auth.uid === $uid && newData.val() === now && root.child('config/open').val() === true && (!data.exists() || !root.child('config/cooldownSec').exists() || now - data.val() >= root.child('config/cooldownSec').val() * 1000)"
+        },
+        "$other": { ".validate": false }
+      }
+    },
+
+    "kratongs": {
+      ".read": true,
+      ".write": "auth != null && root.child('admins').child(auth.uid).val() === true && !newData.exists()",
+      ".indexOn": ["uid", "createdAt"],
+      "$id": {
+        ".write": "auth != null && ((!data.exists() && newData.child('uid').val() === auth.uid && newData.parent().parent().child('users').child(auth.uid).child('lastLaunchAt').val() === now) || root.child('admins').child(auth.uid).val() === true)",
+        ".validate": "newData.hasChildren(['uid', 'name', 'wish', 'parts', 'createdAt'])",
+        "uid": { ".validate": "newData.isString() && (!data.exists() || data.val() === newData.val())" },
+        "name": { ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 30" },
+        "dept": { ".validate": "newData.isString() && newData.val().length <= 30" },
+        "wish": { ".validate": "newData.isString() && newData.val().length <= 120" },
+        "createdAt": { ".validate": "newData.isNumber() && (newData.val() === now || data.val() === newData.val())" },
+        "hidden": { ".validate": "newData.isBoolean() && (root.child('admins').child(auth.uid).val() === true || newData.val() === false)" },
+        "parts": {
+          ".validate": "newData.hasChildren(['base', 'flower', 'candle', 'color'])",
+          "base": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() < 5" },
+          "flower": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() < 5" },
+          "candle": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() < 4" },
+          "color": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() < 6" },
+          "$other": { ".validate": false }
+        },
+        "$other": { ".validate": false }
+      }
+    },
+
+    "reactions": {
+      ".read": true,
+      ".write": "auth != null && root.child('admins').child(auth.uid).val() === true && !newData.exists()",
+      "$kratongId": {
+        ".write": "auth != null && root.child('admins').child(auth.uid).val() === true",
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid && !data.exists() && root.child('kratongs').child($kratongId).exists()",
+          ".validate": "newData.val() === 'heart' || newData.val() === 'flower'"
+        }
+      }
+    }
+  }
+}
