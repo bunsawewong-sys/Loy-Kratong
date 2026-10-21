@@ -25,7 +25,20 @@ Firebase แผนฟรี (Spark) จำกัด **Realtime Database ได�
 - แนะนำตั้ง Budget alert ใน Google Cloud Console (เช่น 100 บาท) เพื่อความสบายใจ
 - โค้ดตัดการเชื่อมต่อของมือถือที่พับจอเกิน 30 วินาทีอัตโนมัติ เพื่อไม่ให้กิน connection
 
-## Setup ครั้งแรก (ทำตามทีละขั้น)
+## Deploy อัตโนมัติผ่าน GitHub Actions (ไม่ต้องติดตั้งโปรแกรม)
+
+วิธีหลัก ทำใน browser ได้ทั้งหมด (คู่มือละเอียดพร้อมตารางค่าที่ต้องใส่อยู่ในเอกสาร "คู่มือ Setup เกมลอยกระทงออนไลน์")
+
+1. สร้าง Firebase project, Realtime Database, Authentication (Anonymous + Email/Password), บัญชี Admin และ `admins/<UID> = true` ตามข้อ 1–6 ของหัวข้อถัดไป แล้วเปิด Build → Hosting → Get started
+2. Google Cloud Console → IAM & Admin → Service Accounts → สร้างบัญชี role **Firebase Admin** + **Service Usage Consumer** → Keys → สร้าง JSON key
+3. GitHub repo → Settings → Secrets and variables → Actions
+   - Variables: `FIREBASE_API_KEY`, `FIREBASE_AUTH_DOMAIN`, `FIREBASE_DATABASE_URL`, `FIREBASE_PROJECT_ID`, `FIREBASE_APP_ID`
+   - Secret: `FIREBASE_SERVICE_ACCOUNT` = เนื้อหาไฟล์ JSON ทั้งไฟล์
+4. Merge เข้า branch `main` (หรือแท็บ Actions → Deploy to Firebase → Run workflow) แล้วรอให้ขึ้นเครื่องหมายถูกสีเขียว เว็บจะอยู่ที่ `https://<project-id>.web.app`
+
+ไฟล์ workflow: `.github/workflows/deploy.yml` (ตรวจ type + unit test ก่อน deploy ทุกครั้ง)
+
+## Setup แบบ deploy จากคอมพิวเตอร์ (ทางเลือก)
 
 ต้องมี: Google account, คอมพิวเตอร์ที่ติดตั้ง [Node.js 20+](https://nodejs.org/) แล้ว
 
