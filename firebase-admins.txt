@@ -1,0 +1,4 @@
+# Firebase Auth UIDs that may use /admin/. One per line; lines starting with # are ignored.
+# The deploy workflow writes each one to admins/<UID> = true. Removing a line here does
+# not revoke access: delete it in Firebase Console > Realtime Database > Data instead.
+vTaUWjk44KSHwHob2ImK1uCEa9Q2
