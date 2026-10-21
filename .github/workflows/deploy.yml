@@ -69,5 +69,11 @@ jobs:
           printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$key"
           export GOOGLE_APPLICATION_CREDENTIALS="$key"
           npx firebase deploy --only hosting,database --project "$FIREBASE_PROJECT_ID" --non-interactive
+          # Grant admin rights to the UIDs listed in firebase-admins.txt
+          admins=$(grep -vE '^\s*(#|$)' firebase-admins.txt | tr -d '\r ' | sed 's/.*/"&":true/' | paste -sd, -)
+          if [ -n "$admins" ]; then
+            instance=$(echo "$FIREBASE_DATABASE_URL" | sed -E 's#^https?://([^.]+)\..*#\1#')
+            npx firebase database:update /admins --data "{$admins}" --instance "$instance" --project "$FIREBASE_PROJECT_ID" --force --non-interactive
+          fi
           rm -f "$key"
           echo "### Deployed: https://$FIREBASE_PROJECT_ID.web.app" >> "$GITHUB_STEP_SUMMARY"
